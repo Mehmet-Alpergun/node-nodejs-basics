@@ -14,25 +14,20 @@ const decompress = async () => {
   const finalPath = join(__dirname, "files", "fileToCompress.txt");
 
   try {
-    // pipeline ile geçici dosyaya yazıyoruz
     await pipeline(
       createReadStream(sourcePath),
       createGunzip(),
       createWriteStream(tempPath),
     );
 
-    // Başarılıysa temp dosyayı final dosya olarak rename ediyoruz
     await rename(tempPath, finalPath);
     console.log("Decompression successful.");
   } catch (err) {
     console.error("Decompression failed:", err.message);
 
-    // Eğer temp dosya varsa sil
     try {
       await unlink(tempPath);
-    } catch (e) {
-      // Silme başarısız olabilir, genellikle dosya yoktur
-    }
+    } catch (e) {}
   }
 };
 

@@ -14,25 +14,20 @@ const compress = async () => {
   const finalPath = join(__dirname, "files", "archive.gz");
 
   try {
-    // pipeline ile geçici dosyaya yazıyoruz
     await pipeline(
       createReadStream(sourcePath),
       createGzip(),
       createWriteStream(tempPath),
     );
 
-    // Başarılıysa final dosyaya geçiyoruz
     await rename(tempPath, finalPath);
     console.log("Compression successful.");
   } catch (err) {
     console.error("Compression failed:", err.message);
 
-    // Eğer temp dosya varsa sil
     try {
       await unlink(tempPath);
-    } catch (e) {
-      // Silme başarısız olabilir, genellikle dosya yoktur
-    }
+    } catch (e) {}
   }
 };
 

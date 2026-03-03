@@ -4,16 +4,13 @@ import { createServer as createServerHttp } from "node:http";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 
-// __filename ve __dirname oluşturma (ESM uyumlu)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// CommonJS dosyasını çalıştırır
 import "./files/c.cjs";
 
 const random = Math.random();
 
-// JSON'ları dinamik import ile alıyoruz
 const unknownModule =
   random > 0.5
     ? await import("./files/a.json", { with: { type: "json" } })
